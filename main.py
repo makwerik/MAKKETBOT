@@ -47,14 +47,14 @@ class MarketBot:
             for link in self.link_items:
                 link_response = re.search(r'\d+\D\d+', link.replace('-', '_'))
                 get_name = requests.get(
-                    f'https://market.csgo.com/api/ItemInfo/{link_response[0]}/ru/?key=Va56rV8ivaR110Ut202XGk6LeaRkSeD').json().get(
+                    f'https://market.csgo.com/api/ItemInfo/{link_response[0]}/ru/?key=[]').json().get(
                     'market_hash_name')
                 get_order = requests.get(
-                    f'https://market.csgo.com/api/BestBuyOffer/{link_response[0]}/?key=Va56rV8ivaR110Ut202XGk6LeaRkSeD').json().get(
+                    f'https://market.csgo.com/api/BestBuyOffer/{link_response[0]}/?key=[]').json().get(
                     'best_offer')
                 get_order = str(int(get_order) + 2)
                 get_price = requests.get(
-                    f'https://market.csgo.com/api/BestSellOffer/{link_response[0]}/?key=Va56rV8ivaR110Ut202XGk6LeaRkSeD').json().get(
+                    f'https://market.csgo.com/api/BestSellOffer/{link_response[0]}/?key=[]').json().get(
                     'best_offer')
                 values = (get_name, link, get_price, get_order)
                 insert = "INSERT INTO items(name,link,price,my_order) VALUES(%s,%s,%s,%s)"
@@ -78,7 +78,7 @@ class MarketBot:
                 link_base = re.search(r'\d+\D\d+', info_base.get('link').replace('-', '/'))[0]
                 order_base = info_base.get('my_order')
                 buy_items = requests.get(
-                    f'https://market.csgo.com/api/ProcessOrder/{link_base}/{order_base}//?key=Va56rV8ivaR110Ut202XGk6LeaRkSeD')
+                    f'https://market.csgo.com/api/ProcessOrder/{link_base}/{order_base}//?key=[]')
                 print(f"Название: {name_base} --- Ордер: {order_base} --- Ссылка: {info_base.get('link')}")
                 print(link_base)
         print('Ордера выставлены!')
@@ -96,7 +96,7 @@ class MarketBot:
                 # Проверяю ордер маркета
                 try:
                     get_best_order_market = requests.get(
-                        f'https://market.csgo.com/api/BuyOffers/{link_check_base}/?key=Va56rV8ivaR110Ut202XGk6LeaRkSeD').json().get(
+                        f'https://market.csgo.com/api/BuyOffers/{link_check_base}/?key=[]').json().get(
                         'best_offer')
                     # Если ордера отличаются,то меняю
                     if int(order_check_base) != int(get_best_order_market):
@@ -110,7 +110,7 @@ class MarketBot:
 
     def delete_orders(self):
         """Удаление всех ордеров"""
-        delet_my_orders = requests.get('https://market.csgo.com/api/DeleteOrders/?key=Va56rV8ivaR110Ut202XGk6LeaRkSeD')
+        delet_my_orders = requests.get('https://market.csgo.com/api/DeleteOrders/?key=[]')
 
 
 b = MarketBot(r'data/cfg.yaml', r'data/items.yaml')
